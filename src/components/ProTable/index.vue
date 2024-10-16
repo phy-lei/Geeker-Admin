@@ -111,7 +111,7 @@ import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps, TypeProps } from "@/components/ProTable/interface";
 import { Refresh, Operation, Search } from "@element-plus/icons-vue";
 import { generateUUID, handleProp } from "@/utils";
-import { ResultData } from "@/api/interface";
+import { ResultData, ResPage } from "@/api/interface";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
@@ -148,7 +148,10 @@ const props = withDefaults(defineProps<ProTableProps<T>>(), {
 
 // 定义slot的类型，支持泛型推断
 const slots = defineSlots<{
-  [key in keyof typeof slots]: (scope: { row: T extends ResultData ? T["data"][number] : T; $index: number }) => any;
+  [key in keyof typeof slots]: (scope: {
+    row: T extends ResultData<ResPage<any>> ? T["data"]["list"][number] : T extends ResultData ? T["data"] : T;
+    $index: number;
+  }) => any;
 }>();
 
 // table 实例
